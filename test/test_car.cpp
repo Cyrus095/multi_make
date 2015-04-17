@@ -3,7 +3,7 @@
 
 /*-----------------------------------------------------------*/
 
-TEST_CASE( "Car's position is correctly set", "[Car::setPosition]" ) {
+TEST_CASE( "Car's position is correctly set", "[Car::getPosition]" ) {
     Car car{30};
 
     REQUIRE( car.getPosition() == 0 );

@@ -18,11 +18,12 @@ TESTDIR:= test
 # -------------------------------------------------------------
 # Files
 
-BIN:= Car
+BIN:= Vehicles
 
 # =============================================================
 
-.PHONY: all main test run install count count_test clean distclean libclean logclean
+.PHONY: all main test run install count count_test \
+        clean distclean libclean logclean totalclean
 
 all: main run
 
@@ -63,3 +64,5 @@ logshow:
 
 logclean:
 	@make -C $(TESTDIR) logclean
+
+totalclean: distclean libclean logclean

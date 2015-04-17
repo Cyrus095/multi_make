@@ -5,9 +5,10 @@
 
 MKDIR:= mkdir -p
 RMDIR:= rm -rf
+RM:= rm -f
 
 # -------------------------------------------------------------
-# Directories
+# Directories and Scripts
 
 BINDIR:= bin
 SRCDIR:= ../src
@@ -15,6 +16,8 @@ TESTDIR:= ./
 INCDIR:= ../include
 OBJDIR:= ../obj
 LOGDIR:= log
+
+SCRIPT:= catchManager.sh
 
 # -------------------------------------------------------------
 # Compiler
@@ -31,14 +34,14 @@ SRC:= $(filter-out $(SRCDIR)/main.cpp, $(wildcard $(SRCDIR)/*.cpp))
 OBJ_SRC:= $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC))
 
 TEST:= $(wildcard $(TESTDIR)/*.cpp)
-OBJ_TEST:= $(patsubst $(TESTDIR)/%.cpp,$(OBJDIR)/%.o,$(TEST))
-
 BIN_NAME:= $(patsubst $(TESTDIR)/%.cpp,$(BINDIR)/%,$(TEST))
-BIN_EXEC:= $(wildcard $(BINDIR)/*)
 
 # =============================================================
 
 .PHONY: all run clean logclean
+
+# Don't erase any intermediate file
+.SECONDARY:
 
 all: $(BIN_NAME)
 
@@ -55,13 +58,15 @@ $(OBJDIR) $(BINDIR) $(LOGDIR):
 	$(MKDIR) $@
 
 run: all $(LOGDIR)
+	@echo "Running tests..."
 	@$(foreach bin,\
-	   $(BIN_EXEC),\
-	   ./$(bin) | tee $(LOGDIR)/`basename $(bin)`.log;)
-	@echo "> Log files updated!"
+	   $(BIN_NAME),\
+	   ./$(SCRIPT) $(bin) $(LOGDIR)/`basename $(bin)`.log;)
+	@echo "Done!"
 
+# Checks if $(LOGDIR) exists and isn't empty before displaying text
 logshow:
-	@ls $(LOGDIR) | cat
+	@if [ -d $(LOGDIR) ] && [ $$(ls -A $(LOGDIR)) ]; then cat $(LOGDIR)/*; fi
 
 clean:
 	$(RMDIR) $(BINDIR)

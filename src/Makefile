@@ -24,7 +24,7 @@ INC:= -I$(INCDIR)
 # -------------------------------------------------------------
 # Files
 
-BIN:= Car
+BIN:= Vehicles
 SRC:= $(wildcard $(SRCDIR)/*.cpp)
 OBJ:= $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC))
 
