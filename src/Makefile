@@ -1,0 +1,48 @@
+### SRC MAKEFILE ###
+
+# -------------------------------------------------------------
+# Bash Commands
+
+MKDIR:= mkdir -p
+
+# -------------------------------------------------------------
+# Directories
+
+BINDIR:= ../bin
+SRCDIR:= ./
+INCDIR:= ../include
+OBJDIR:= ../obj
+
+# -------------------------------------------------------------
+# Compiler
+
+CC:= g++
+CFLAGS:= -Wall -O3 -std=c++11 -pedantic -Wno-unused-result
+LIBS:=
+INC:= -I$(INCDIR)
+
+# -------------------------------------------------------------
+# Files
+
+BIN:= Car
+SRC:= $(wildcard $(SRCDIR)/*.cpp)
+OBJ:= $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC))
+
+
+# =============================================================
+
+.PHONY: all
+
+all: $(BINDIR)/$(BIN)
+
+$(BINDIR)/$(BIN): $(OBJ) | $(BINDIR)
+	$(CC) $^ $(LIBS) -o $@
+	@echo "Generating C++ binary \033[1;32m"$@"\033[0m"
+
+$(OBJ): | $(OBJDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+$(OBJDIR) $(BINDIR):
+	$(MKDIR) $@

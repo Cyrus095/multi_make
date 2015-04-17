@@ -1,0 +1,12 @@
+# Files/folders created by program
+bin/*
+obj/*
+test/bin/*
+test/log/*
+
+# Installed files/folders
+include/Catch/*
+
+# Other files
+*~
+*.dropbox
