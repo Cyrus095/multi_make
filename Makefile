@@ -60,7 +60,7 @@ libclean:
 	$(RMDIR) catch.hpp $(INCDIR)/Catch
 
 logshow:
-	@make -C $(TESTDIR) logshow
+	@make -sC $(TESTDIR) logshow
 
 logclean:
 	@make -C $(TESTDIR) logclean

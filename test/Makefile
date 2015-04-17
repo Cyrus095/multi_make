@@ -17,8 +17,6 @@ INCDIR:= ../include
 OBJDIR:= ../obj
 LOGDIR:= log
 
-SCRIPT:= catchManager.sh
-
 # -------------------------------------------------------------
 # Compiler
 
@@ -30,11 +28,14 @@ INC:= -I$(INCDIR)
 # -------------------------------------------------------------
 # Files
 
+BIN:= test
+SCRIPT:= catchManager.sh
+
 SRC:= $(filter-out $(SRCDIR)/main.cpp, $(wildcard $(SRCDIR)/*.cpp))
 OBJ_SRC:= $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC))
 
 TEST:= $(wildcard $(TESTDIR)/*.cpp)
-BIN_NAME:= $(patsubst $(TESTDIR)/%.cpp,$(BINDIR)/%,$(TEST))
+OBJ_TEST:= $(patsubst $(TESTDIR)/%.cpp,$(OBJDIR)/%.o,$(TEST))
 
 # =============================================================
 
@@ -43,9 +44,9 @@ BIN_NAME:= $(patsubst $(TESTDIR)/%.cpp,$(BINDIR)/%,$(TEST))
 # Don't erase any intermediate file
 .SECONDARY:
 
-all: $(BIN_NAME)
+all: $(BINDIR)/$(BIN)
 
-$(BINDIR)/%: $(OBJ_SRC) $(OBJDIR)/%.o | $(BINDIR)
+$(BINDIR)/$(BIN): $(OBJ_SRC) $(OBJ_TEST) | $(BINDIR)
 	$(CC) $^ $(LIBS) -o $@
 	@echo "Generating C++ testing binary \033[1;33m"$@"\033[0m"
 
@@ -59,14 +60,10 @@ $(OBJDIR) $(BINDIR) $(LOGDIR):
 
 run: all $(LOGDIR)
 	@echo "Running tests..."
-	@$(foreach bin,\
-	   $(BIN_NAME),\
-	   ./$(SCRIPT) $(bin) $(LOGDIR)/`basename $(bin)`.log;)
-	@echo "Done!"
+	@./$(SCRIPT) $(BINDIR)/$(BIN) $(LOGDIR)/`date +'%d-%m-%Y--%H:%M:%S'`.log
 
-# Checks if $(LOGDIR) exists and isn't empty before displaying text
 logshow:
-	@if [ -d $(LOGDIR) ] && [ $$(ls -A $(LOGDIR)) ]; then cat $(LOGDIR)/*; fi
+	@ls $(LOGDIR)
 
 clean:
 	$(RMDIR) $(BINDIR)

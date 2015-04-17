@@ -1,4 +1,4 @@
-#include "test.hpp"
+#include "Catch/catch.hpp"
 #include "ship.hpp"
 
 /*-----------------------------------------------------------*/

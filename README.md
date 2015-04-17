@@ -28,6 +28,6 @@ Extra libraries used are:
 
     $ make test
 
-  **5.** To read log files created by failed tests, use:
+  **5.** To show all created log files, use:
 
     $ make logshow

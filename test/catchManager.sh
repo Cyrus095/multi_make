@@ -39,5 +39,6 @@ if (( $# < 2 )); then usage $0; fi
 if (( $? == 0 )); then
     rm -f $2
 else
-    echo -e "\033[1;31m$1\033[0m -> $2"
+    cat $2
+    echo -e "Failure saved in \033[1;31m$2\033[0m"
 fi
