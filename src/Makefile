@@ -28,12 +28,16 @@ BIN:= Vehicles
 SRC:= $(wildcard $(SRCDIR)/*.cpp)
 OBJ:= $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC))
 
+SRC_NOMAIN:= $(filter-out $(SRCDIR)/main.cpp, $(wildcard $(SRCDIR)/*.cpp))
+OBJ_NOMAIN:= $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC_NOMAIN))
 
 # =============================================================
 
-.PHONY: all
+.PHONY: all object
 
 all: $(BINDIR)/$(BIN)
+
+object: $(OBJ_NOMAIN)
 
 $(BINDIR)/$(BIN): $(OBJ) | $(BINDIR)
 	$(CC) $^ $(LIBS) -o $@

@@ -30,7 +30,8 @@ all: main run
 main:
 	@make -C $(SRCDIR)
 
-test: main
+test:
+	@make -C $(SRCDIR) object
 	@make -C $(TESTDIR) run
 
 run: main
